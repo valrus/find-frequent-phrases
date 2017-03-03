@@ -15,7 +15,7 @@ class TrieNode(object):
         self.nexts = defaultdict(TrieNode)
 
     def add_phrase(self, phrase):
-        """Add a phrase to this trie.
+        """Add a phrase to this trie. Return whether it's been seen before.
 
         phrase should be an iterable of words.
         """
