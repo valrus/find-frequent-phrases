@@ -22,22 +22,15 @@ class TrieNode(object):
             return True
         return False
 
-    def find_top(self, k, phrase=None, heap=None):
-        queue = deque([self])
-        phrase = phrase or deque()
-        heap = heap or MaxHeap(size=k)
-        while queue:
-            node = queue.popleft()
-            if node.word is not None:
-                phrase.append(node.word)
-            if node.nexts:
-                found_longer = False
-                for next_node in node.nexts.values():
-                    if next_node.count > 1:
-                        queue.append(next_node)
-                    found_longer |= (next_node.count >= node.count)
-                if not found_longer:
-                    heap.add(node.count, tuple(phrase))
-            else:
-                phrase.pop()
-        return heap.largest()
+    def find_top(self, k, heap, phrase=None):
+        phrase = phrase or []
+        if self.nexts:
+            found_longer = self.count == 0
+            for next_word, next_node in self.nexts.items():
+                if next_node.count > 1:
+                    next_node.find_top(k, heap, phrase + [next_word])
+                found_longer |= (next_node.count >= self.count)
+            if not found_longer:
+                heap.add(self.count, tuple(phrase))
+        else:
+            heap.add(self.count, tuple(phrase))

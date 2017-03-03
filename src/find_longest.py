@@ -3,6 +3,7 @@ import argparse
 import re
 import sys
 
+from maxheap import MaxHeap
 from trie import TrieNode
 
 SPLITTER = re.compile(r"([^\w'-])")
@@ -38,7 +39,9 @@ def main():
                 dupes += freqs.add_phrase(ngram)
         done = dupes <= 1
         ngram_length += 1
-    print(freqs.find_top(args.top))
+    heap = MaxHeap(size=args.top)
+    freqs.find_top(args.top, heap)
+    print(heap.largest())
 
 
 if __name__ == '__main__':
