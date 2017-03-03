@@ -1,4 +1,4 @@
-from heapq import heappush, heappushpop
+from heapq import heappush, heappushpop, nlargest
 
 
 class MaxHeap(object):
@@ -8,9 +8,10 @@ class MaxHeap(object):
 
     def add(self, freq, item):
         if len(self.storage) < self.size:
-            heappush(self.storage, (-freq, item))
+            heappush(self.storage, (freq, len(item), item))
         else:
-            heappushpop(self.storage, (-freq, item))
+            heappushpop(self.storage, (freq, len(item), item))
 
     def largest(self):
-        return [(item, -freq) for (freq, item) in sorted(self.storage)]
+        return [(' '.join(item), freq)
+                for (freq, _, item) in nlargest(self.size, self.storage)]
