@@ -30,18 +30,17 @@ def main():
     args = set_up_parser().parse_args()
     tokens = [SPLITTER.split(line) for line in args.infile]
     ngram_length = 1
-    done = False
+    dupes = 1
     freqs = TrieNode()
-    while not done:
+    while dupes:
         dupes = 0
         for line in tokens:
             for ngram in sliding_window_no_whitespace(line, ngram_length):
                 dupes += freqs.add_phrase(ngram)
-        done = dupes <= 1
         ngram_length += 1
     heap = MaxHeap(size=args.top)
     freqs.find_top(args.top, heap)
-    print(heap.largest())
+    print(*heap.largest(), sep='\n')
 
 
 if __name__ == '__main__':
