@@ -1,2 +1,3 @@
 Hi this is a test file for find longest dot py.
 It is a silly little test file for seeing if things work ok.
+This test file for the script is very short.
