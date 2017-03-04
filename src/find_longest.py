@@ -28,7 +28,7 @@ def sliding_window_no_whitespace(tokens, window_length):
 
 def main():
     args = set_up_parser().parse_args()
-    tokens = [SPLITTER.split(line) for line in args.infile]
+    tokens = [SPLITTER.split(line.lower()) for line in args.infile]
     ngram_length = 1
     dupes = 1
     freqs = TrieNode()
