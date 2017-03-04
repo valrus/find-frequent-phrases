@@ -19,14 +19,15 @@ class TrieNode(object):
         curr_node.count += 1
         return curr_node.count > 1
 
-    def find_top(self, k, heap, phrase=None):
+    def find_top(self, k, heap, phrase=None, min_length=2):
         phrase = phrase or []
         heap = heap or MaxHeap(size=k)
-        skip_this = (self.count == 0 or len(phrase) == 1)
+        skip_this = (self.count == 0 or len(phrase) < min_length)
         if self.nexts:
             for next_word, next_node in self.nexts.items():
                 if next_node.count > 1:
-                    next_node.find_top(k, heap, phrase + [next_word])
+                    next_node.find_top(k, heap, phrase + [next_word],
+                                       min_length=min_length)
                 skip_this |= (next_node.count >= self.count)
         if not skip_this:
             heap.add(self.count, tuple(phrase))
